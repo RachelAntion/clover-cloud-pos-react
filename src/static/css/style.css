@@ -1,0 +1,283 @@
+html{
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    min-height:0;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    min-height:100%;
+    overflow-x: hidden;
+
+}
+
+[data-reactroot] {
+    min-height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#main{
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position:fixed;
+    top:0;
+    left: 0;
+    width:100%;
+}
+
+h3{
+    margin-top: 0px;
+}
+
+.page_header{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 50px;
+    padding-right: 20px;
+    align-items: center;
+}
+
+#connection_status{
+    margin-left: 20px;
+}
+
+.filler_space{
+    flex-grow: 1;
+}
+
+.normal_button {
+    border-radius: 3px;
+    border: none;
+    font-size: 16px;
+}
+
+.button_margin{
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.last{
+    margin-right: 20px;
+}
+
+.body_content{
+    display:flex;
+    flex-direction: column;
+    flex-grow:1;
+    padding: 20px;
+    width: calc(100% - 40px);
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.title_bar{
+    display: flex;
+    align-items: center;
+    background: #547554;
+    color: white;
+    height: 25px;
+    font-size: 17px;
+    flex-grow: 1;
+    padding-left: 10px;
+}
+
+.container_left{
+    margin-right: 5px;
+    flex-grow: 1;
+}
+
+.container_right{
+    margin-left: 5px;
+    flex-grow: 1;
+}
+
+.register_left{
+    display:flex;
+    width: 30%;
+    flex-direction:column;
+}
+
+.register_right{
+    display: flex;
+    width:70%;
+}
+
+.register_sale_items{
+    flex-grow:1;
+}
+
+.register_actions{
+    width: calc(100% - 40px);
+}
+
+.register_line{
+    display: flex;
+    flex-direction: row;
+}
+
+.register_line_left{
+    flex-grow: 1;
+}
+
+.register_buttons{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.register_button{
+    flex-grow: 1;
+}
+
+.middle{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button_white{
+    background: white;
+    border: 1px solid black;
+}
+
+.button_green {
+    background: #547554;
+    color: white;
+}
+
+.button_red {
+    background: #ffb3b3;
+    color: black;
+}
+
+
+.orders_list{
+    flex-grow: 1;
+}
+
+.order_items_and_payments {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.make_refund{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.register{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    padding-bottom: 10px;
+}
+
+.column{
+    display:flex;
+    flex-direction: column;
+    flex-grow:1;
+}
+
+
+.card_list{
+    flex-grow: 1;
+}
+
+.cards_footer{
+    display: flex;
+    flex-direction: row;
+}
+
+.preauth_list{
+    flex-grow: 1;
+}
+
+.preauth_footer{
+    display: flex;
+    flex-direction: row;
+}
+
+.pending_list{
+    flex-grow: 1;
+}
+
+.pending_footer{
+    display: flex;
+    flex-direction: row;
+}
+
+.misc_row{
+    display: flex;
+    flex-direction: row;
+}
+
+.custom_activities{
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction_settings{
+    display: flex;
+    flex-direction: column;
+}
+
+.onoffswitch {
+    position: relative; width: 75px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 18px; padding: 0; line-height: 18px;
+    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 10px;
+    background-color: #34A7C1; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 9px; margin: 4.5px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 53px;
+    border: 2px solid #999999; border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
