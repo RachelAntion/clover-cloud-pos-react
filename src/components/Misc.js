@@ -171,19 +171,19 @@ export default class Misc extends React.Component {
                     <div className="misc_row">
                         <div>Disable Duplicate Payment Checking</div>
                         <div className="onoffswitch">
-                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label class="onoffswitch-label" for="myonoffswitch">
-                                <span class="onoffswitch-inner"/>
-                                <span class="onoffswitch-switch"/>
+                            <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
+                                <span className="onoffswitch-inner"/>
+                                <span className="onoffswitch-switch"/>
                             </label>
                         </div>
                     </div>
 
                     <div className="misc_row">
                         <div>Disable Device Receipt Options Screen</div>
-                        <div class="onoffswitch">
+                        <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
@@ -194,7 +194,7 @@ export default class Misc extends React.Component {
                         <div>Disable Device Printing</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
@@ -205,7 +205,7 @@ export default class Misc extends React.Component {
                         <div>Automatically Confirm Signature</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
@@ -216,7 +216,7 @@ export default class Misc extends React.Component {
                         <div>Automatically Confirm Payment Challenges</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
