@@ -2,3 +2,5 @@
 /.idea
 /babel_cache
 /src/static/js/bundle.js
+package-lock.json
+
