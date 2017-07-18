@@ -50,7 +50,7 @@ export default class Misc extends React.Component {
                         <div>Non-Blocking</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
@@ -74,7 +74,7 @@ export default class Misc extends React.Component {
                         <div>Manual</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
@@ -84,7 +84,7 @@ export default class Misc extends React.Component {
                         <div>Swipe</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
@@ -94,7 +94,7 @@ export default class Misc extends React.Component {
                         <div>Chip</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
@@ -104,7 +104,7 @@ export default class Misc extends React.Component {
                         <div>Contactless</div>
                         <div className="onoffswitch">
                             <input type="checkbox" name="onoffswitch" className="onoffswitch-checkbox" id="myonoffswitch" checked/>
-                            <label className="onoffswitch-label" for="myonoffswitch">
+                            <label className="onoffswitch-label" htmlFor="myonoffswitch">
                                 <span className="onoffswitch-inner"/>
                                 <span className="onoffswitch-switch"/>
                             </label>
