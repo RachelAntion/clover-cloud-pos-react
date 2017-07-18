@@ -9,9 +9,7 @@ export default class Register extends React.Component {
     connect() {
         let factoryConfig = {};
         factoryConfig[clover.CloverConnectorFactoryBuilder.FACTORY_VERSION] = clover.CloverConnectorFactoryBuilder.VERSION_12;
-        let cloverConnectorFactory = clover.CloverConnectorFactoryBuilder.createICloverConnectorFactory({
-            factoryConfig
-        });
+        let cloverConnectorFactory = clover.CloverConnectorFactoryBuilder.createICloverConnectorFactory(factoryConfig);
         let connector = cloverConnectorFactory.createICloverConnector(new clover.WebSocketPairedCloverDeviceConfiguration(
             "wss://192.168.0.114:12345/remote_pay",
             "com.clover.cloud-pos-example-react",
