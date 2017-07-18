@@ -12,7 +12,7 @@ export default class Refund extends React.Component {
                         <input className="normal_button button_white button_margin" type="submit" value="Refund"/>
                     </form>
                 </div>
-                <div class="refund_list">
+                <div className="refund_list">
                   <TitleBar title="Manual Refunds"/>
                 </div>
             </div>
