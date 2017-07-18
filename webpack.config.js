@@ -15,7 +15,8 @@ module.exports = {
                 cacheDirectory: 'babel_cache',
                 presets: ['react', 'es2015']
             }
-        }]
+        }, {test: /\.tsx?$/, loader: "ts-loader"}
+        ]
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -25,9 +26,9 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: { warnings: false },
-            mangle: true,
-            sourcemap: false,
-            beautify: false,
+            mangle: false,
+            sourcemap: true,
+            beautify: true,
             dead_code: true
         })
     ]
