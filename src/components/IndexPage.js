@@ -1,5 +1,5 @@
 import React from 'react';
-import Register from "./Register";
+import HomeMenu from "./HomeMenu";
 
 export default class IndexPage extends React.Component {
     constructor(props) {
@@ -8,7 +8,7 @@ export default class IndexPage extends React.Component {
 
     render() {
         return (
-                <Register/>
+                <HomeMenu/>
         );
     }
 }

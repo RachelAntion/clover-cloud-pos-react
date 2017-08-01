@@ -49,7 +49,7 @@ h3{
 }
 
 #connection_status{
-    margin-left: 20px;
+    margin-left: 15px;
 }
 
 .filler_space{
@@ -64,8 +64,6 @@ h3{
 
 .button_margin{
     margin-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .last{
@@ -107,6 +105,7 @@ h3{
     display:flex;
     width: 30%;
     flex-direction:column;
+    padding-left: 20px;
 }
 
 .register_right{
@@ -116,6 +115,7 @@ h3{
 
 .register_sale_items{
     flex-grow:1;
+    margin-top: 20px;
 }
 
 .register_actions{
@@ -140,8 +140,15 @@ h3{
 
 .register_button{
     flex-grow: 1;
+    padding: 10px;
+}
+.left{
+    margin-right: 5px;
 }
 
+.right {
+    margin-left: 5px;
+}
 .middle{
     margin-left: 10px;
     margin-right: 10px;
@@ -164,7 +171,12 @@ h3{
 
 
 .orders_list{
-    flex-grow: 1;
+    flex-grow: 2;
+}
+
+.payments_list{
+    flex-grow: 1.4;
+    margin-left: 5px;
 }
 
 .order_items_and_payments {
@@ -191,6 +203,7 @@ h3{
     display:flex;
     flex-direction: column;
     flex-grow:1;
+    margin-right: 5px;
 }
 
 
@@ -224,6 +237,9 @@ h3{
 .misc_row{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .custom_activities{
@@ -232,8 +248,12 @@ h3{
 }
 
 .transaction_settings{
+    flex-grow: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 30px;
 }
 
 .onoffswitch {
@@ -280,4 +300,421 @@ h3{
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
+}
+
+.connect_box{
+    display: flex;
+    flex-direction: row;
+}
+
+.connect_button{
+    padding: 12px 20px;
+    margin-left: 10px;
+}
+
+.connect_container{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.connect_container > h3 {
+    margin-bottom: 0px;
+    margin-top: 35px;
+}
+
+
+.input_field{
+    font-size: 15px;
+    width: 400px;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.home_menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    flex-grow: 1;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.button_large{
+    width: 300px;
+    padding: 20px 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.clover_logo{
+    width: 500px;
+}
+
+.pairing_code{
+    margin-top: 25px;
+    font-weight: bold;
+}
+
+.home_logo{
+    height: 30px;
+    margin-left: 20px;
+    margin-left: 20px;
+}
+
+.orders {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.recovery_options{
+    flex-grow: 1;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+
+.custom_activities{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.custom_options {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.custom_item{
+    padding-left: 5px;
+    height: 30px !important;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.settings{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings > h3 {
+    margin-bottom: 0px;
+}
+
+.settings_side{
+    padding-bottom:20px;
+}
+.settings_left{
+    flex-grow: 1;
+    padding-right: 50px;
+}
+.settings_right{
+    flex-grow: 2;
+    padding-left: 50px;
+}
+
+.settings_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 35px;
+    align-items: center;
+}
+
+.radio_button{
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
+.setting_select{
+    width: 150px;
+    height: 30px;
+}
+
+.setting_input{
+    height: 24px;
+    width: 140px;
+    padding-left: 5px;
+}
+
+.device{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.device_options{
+    width: 375px;
+    display: flex;
+    flex-direction: column;
+}
+
+.device_input{
+    height: 40px !important;
+    width: 165px;
+    padding-left: 10px;
+}
+
+.button_input{
+    width: 180px;
+    height: 46px;
+}
+
+.button_device{
+    width: 180px;
+    height:50px;
+}
+
+.popup{
+    background: white;
+    border: solid black 3px;
+    box-shadow: 0 0 20px #000000;
+    position: absolute;
+    top: 30%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+.enter_payment_id {
+    width: 250px;
+}
+
+.payment_id_body {
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.payment_id_entry{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.close_popup{
+    padding-top: 0px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.register_items{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.available_item{
+    border: 1px solid grey;
+    height: 75px;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.item_title{
+    flex-grow: 1;
+    vertical-align: middle;
+    padding: 5px;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.item_price{
+    background: #547554;
+    color:white;
+    padding: 5px;
+    text-align: right;
+}
+
+.popup_container{
+    display: flex;
+    width: 380px;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.new_order_types{
+    padding: 30px 40px 40px 40px;
+}
+
+.payment_methods{
+    padding: 30px 40px 40px 40px;
+}
+
+.preauth_popup{
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.preauth_button_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.preauth_button{
+    width: 140px;
+    padding: 5px;
+}
+
+.order_row{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.order_row_left{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.order_row_middle{
+    flex-grow: 2;
+    text-align: center;
+}
+
+.order_row_right{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.order_item_row{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid grey;
+    justify-content: space-between;
+}
+
+.space_between_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.payments{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.payment_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 350px;
+}
+
+.payment_row_left{
+    width: 200px;
+}
+
+.payment_row_right{
+    flex-grow: 1;
+    text-align: left;
+}
+
+.space_under{
+    margin-bottom: 10px;
+}
+
+#adjustTip{
+    width: 100%;
+    padding: 5px 0px 5px 20px;
+    width: 100%;
+}
+
+.tip_adjust_input{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.dollar_span{
+    position: absolute;
+    left: 12px;
+    top: 70px;
+}
+
+.payment_details_list{
+    margin-left: 112px;
+}
+
+.middle_grow{
+    flex-grow: 1;
+    padding-left: 50px;
+}
+
+.payments_container{
+    display: flex;
+    flex-direction: row;
+}
+
+.add_tip{
+    height: 50px;
+    padding: 5px 30px 5px 30px;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+.payment_section{
+    margin-top: 30px;
+    border-top: grey 1px solid;
+    padding-top: 20px;
+}
+
+.transaction_row{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid grey;
+    justify-content: space-between;
+}
+
+.transaction_row_column{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
+.last_item{
+    text-align: right;
+}
+
+.red_text{
+    color:red;
+}
+
+.dollar_span_refund{
+    position: absolute;
+    top: 124px;
+    left: 29px;
+}
+
+.refunds{
+
 }

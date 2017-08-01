@@ -5,9 +5,10 @@ import clover from 'remote-pay-cloud';
 
 export default class Connect {
 
-    constructor(toggleConnectionState){
+    constructor(toggleConnectionState, setPairingCode){
         this.connected = false;
         this.toggleConnectionState = toggleConnectionState;
+        this.setPairingCode = setPairingCode;
         // this.uriText = "wss://192.168.0.114:12345/remote_pay";
         // this.handleChange = this.handleChange.bind(this);
         // this.connect = this.connect.bind(this);
@@ -23,7 +24,6 @@ export default class Connect {
 
     connectToDevice(uriText) {
         console.log("connecting.....");
-        console.log("uriText", uriText);
         // let saleCalled = false;
         let factoryConfig = {};
         factoryConfig[clover.CloverConnectorFactoryBuilder.FACTORY_VERSION] = clover.CloverConnectorFactoryBuilder.VERSION_12;
@@ -36,7 +36,7 @@ export default class Connect {
             authToken: null,
             heartbeatInterval: 1000,
             reconnectDelay: 3000
-        }, this.toggleConnectionState, this.setConnected.bind(this)));
+        }, this.toggleConnectionState, this.setConnected.bind(this), this.setPairingCode));
 
 
         let ExampleCloverConnectorListener = function(cloverConnector) {
@@ -106,8 +106,7 @@ export class ExampleWebsocketPairedCloverDeviceConfiguration extends clover.WebS
      * @param rawConfiguration - a raw json object for initialization.
      */
     constructor(
-        rawConfiguration, toggleConnectionState, setConnected) {
-        console.log(toggleConnectionState);
+        rawConfiguration, toggleConnectionState, setConnected, setPairingCode) {
         super(
             rawConfiguration.uri,
             rawConfiguration.applicationId,
@@ -120,11 +119,13 @@ export class ExampleWebsocketPairedCloverDeviceConfiguration extends clover.WebS
             rawConfiguration.reconnectDelay);
         this.toggleConnectionState = toggleConnectionState;
         this.setConnected = setConnected;
+        this.setPairingCode = setPairingCode;
     }
 
     onPairingCode(pairingCode) {
         console.log("Pairing code is " + pairingCode);
-        // showPairingCode(pairingCode);
+        this.setPairingCode(pairingCode);
+        showPairingCode(pairingCode);
     }
 
     onPairingSuccess(authToken) {
