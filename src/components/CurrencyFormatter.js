@@ -12,6 +12,11 @@ export default class CurrencyFormatter {
         }
     }
 
+    convertStringToFloat(currency){
+        let float = currency.substr(1,currency.length);
+        return parseFloat(float);
+    }
+
     convertToFloat(currency){
         let number = currency.toString();
         let first = number.substr(0,number.length-2);

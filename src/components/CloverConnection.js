@@ -1,18 +1,22 @@
 import React from 'react';
 import clover from 'remote-pay-cloud';
+import ExampleCloverConnectorListener from "./POSCloverConnectorListener";
 
 // clover.DebugConfig.loggingEnabled = true;
 
 export default class Connect {
 
-    constructor(toggleConnectionState, setPairingCode){
+    constructor(toggleConnectionState, setPairingCode, setStatus, duplicate, tipAdded, store){
         this.connected = false;
         this.toggleConnectionState = toggleConnectionState;
         this.setPairingCode = setPairingCode;
-        // this.uriText = "wss://192.168.0.114:12345/remote_pay";
-        // this.handleChange = this.handleChange.bind(this);
-        // this.connect = this.connect.bind(this);
+        this.setStatus = setStatus;
+        this.duplicate = duplicate;
+        this.tipAdded = tipAdded;
+        this.cloverConnector = null;
+        this.store = store;
     }
+
     getConnected (){
         console.log("getConnected called", this.connected);
         return this.connected;
@@ -37,57 +41,12 @@ export default class Connect {
             heartbeatInterval: 1000,
             reconnectDelay: 3000
         }, this.toggleConnectionState, this.setConnected.bind(this), this.setPairingCode));
+        this.cloverConnector = connector;
 
-
-        let ExampleCloverConnectorListener = function(cloverConnector) {
-            clover.remotepay.ICloverConnectorListener.call(this);
-            this.cloverConnector = cloverConnector;
-        };
-
-        ExampleCloverConnectorListener.prototype = Object.create(clover.remotepay.ICloverConnectorListener.prototype);
-        ExampleCloverConnectorListener.prototype.constructor = ExampleCloverConnectorListener;
-
-        ExampleCloverConnectorListener.prototype.onReady = function (merchantInfo) {
-            // if(!saleCalled) {
-            //     let saleRequest = new clover.remotepay.SaleRequest();
-            //     saleRequest.setExternalId(clover.CloverID.getNewId());
-            //     saleRequest.setAmount(10000);
-            //     this.cloverConnector.sale(saleRequest);
-            //     saleCalled = true;
-            // }
-        };
-
-        ExampleCloverConnectorListener.prototype.onVerifySignatureRequest = function (request) {
-            console.log("accepting signature: ", request);
-            this.cloverConnector.acceptSignature(request);
-        };
-
-        ExampleCloverConnectorListener.prototype.onConfirmPaymentRequest = function (request) {
-            console.log("confirmPayment :" ,request);
-            this.cloverConnector.acceptPayment(request.payment);
-        };
-
-        ExampleCloverConnectorListener.prototype.onSaleResponse = function (response) {
-            // log.info(response);
-            connector.showWelcomeScreen();
-            connector.dispose();
-            if(!response.getIsSale()) {
-                console.error("Response is not an sale!");
-                console.error(response);
-            }
-        };
-
-        let connectorListener = new ExampleCloverConnectorListener(connector);
+        let connectorListener = new ExampleCloverConnectorListener(connector, this.setStatus, this.duplicate, this.tipAdded, this.store);
         connector.addCloverConnectorListener(connectorListener);
         connector.initializeConnection();
 
-        // $(window).on('beforeunload ', function () {
-        //     try {
-        //         connector.dispose();
-        //     } catch (e) {
-        //         console.log(e);
-        //     }
-        // });
     }
 
     render(){

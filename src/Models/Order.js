@@ -1,5 +1,5 @@
-import OrderItem from "./OrderItem";
 import CurrencyFormatter from "../components/CurrencyFormatter";
+import clover from 'remote-pay-cloud-api';
 
 export default class Order {
 
@@ -25,13 +25,18 @@ export default class Order {
         this.status = status;
     }
 
-    addItem(item){
-        let orderItem = this.getOrderItemById(item.id);
+    addItem(id, title, price){
+        let orderItem = this.getOrderItemById(id);
         if(orderItem == null){
-            this.items.push(new OrderItem(item,this.id));
+            let lineItem = new clover.order.DisplayLineItem();
+            lineItem.setId(id);
+            lineItem.setName(title);
+            lineItem.setPrice(this.formatter.formatCurrency(price));
+            lineItem.setQuantity(1);
+            this.items.push(lineItem);
         }
         else{
-            orderItem.incrementQuantity(1);
+            orderItem.setQuantity(orderItem.quantity + 1);
         }
     }
 
@@ -77,9 +82,9 @@ export default class Order {
     calculateTotal(){
         let total = 0;
         this.items.forEach(function(item){
-            total += (item.item.price * item.quantity);
+            total += (this.formatter.convertStringToFloat(item.price) * item.quantity);
         }, this);
-        return this.formatter.convertToFloat(total);
+        return total;
     }
 
     getDate(){

@@ -39,6 +39,10 @@ h3{
     margin-top: 0px;
 }
 
+.no_margin{
+    margin: 0px;
+}
+
 .page_header{
     display: flex;
     flex-direction: row;
@@ -116,6 +120,7 @@ h3{
 .register_sale_items{
     flex-grow:1;
     margin-top: 20px;
+    width: calc(100% - 40px);
 }
 
 .register_actions{
@@ -251,9 +256,9 @@ h3{
     flex-grow: 1;
     display: flex;
     flex-direction: row;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 30px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
 }
 
 .onoffswitch {
@@ -401,9 +406,19 @@ h3{
 }
 
 .settings{
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    padding: 20px;
+    width: 65%;
+    background: white;
+    border: solid black 3px;
+    box-shadow: 0 0 20px #000000;
+    position: absolute;
+    top: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
 }
 
 .settings > h3 {
@@ -415,11 +430,13 @@ h3{
 }
 .settings_left{
     flex-grow: 1;
-    padding-right: 50px;
+    padding-right: 30px;
 }
 .settings_right{
-    flex-grow: 2;
-    padding-left: 50px;
+    flex-grow: 1;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 .settings_row{
@@ -430,6 +447,12 @@ h3{
     padding-bottom: 8px;
     margin-left: 35px;
     align-items: center;
+}
+
+.settings_actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 .radio_button{
@@ -483,7 +506,6 @@ h3{
     box-shadow: 0 0 20px #000000;
     position: absolute;
     top: 30%;
-    position: absolute;
     margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -711,10 +733,67 @@ h3{
 
 .dollar_span_refund{
     position: absolute;
-    top: 124px;
-    left: 29px;
+    top: 81px;
+    left: 258px;
+}
+
+.register_allow_tips{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    justify-content: flex-end;
+}
+
+.register_item_title{
+    flex-grow: 1;
+    padding-left: 20px;
+}
+
+.make_refund{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: row;
+    font-size: 20px;
 }
 
 .refunds{
+    display: flex;
+    flex-direction: column;
+}
 
+.refund_input{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 15px;
+    padding: 12px 30px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.refund_button{
+    height: 44px;
+    padding: 5px 20px;
+}
+
+.refund_row{
+    padding: 10px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.status{
+    padding: 20px;
+}
+
+.reject_accept{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.dialog_button{
+    padding: 5px 30px;
+    flex-grow: 1;
 }

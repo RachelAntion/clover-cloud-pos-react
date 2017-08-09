@@ -16,6 +16,6 @@ var items =  [
     { "id": 14, "title" : "Strawberry Milkshake", "itemPrice" : 439},
     { "id": 15, "title" : "Ice Cream Cone", "itemPrice" : 189},
     { "id": 16, "title" : "$25 Gift Card", "itemPrice" : 2500},
-    { "id": 17, "title" : "$50 Gift Card", "itemPrice" : 539}
+    { "id": 17, "title" : "$50 Gift Card", "itemPrice" : 5000}
 ]
 module.exports = items;

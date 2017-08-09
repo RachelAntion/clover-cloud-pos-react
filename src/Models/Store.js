@@ -1,12 +1,16 @@
+import clover from 'remote-pay-cloud';
+
 export default class Store {
 
     constructor() {
+        this.cardEntryMethods = clover.CardEntryMethods.DEFAULT;
         this.availableItems = [];
         this.orders = [];
-        this.cards = [];
+        this.card = null;
         this.credits = [];
         this.preAuths = [];
         this.transactions = [];
+        this.refunds = [];
 
     }
 
@@ -48,12 +52,12 @@ export default class Store {
         this.orders.push(order);
     }
 
-    getCards(){
-        return this.cards;
+    getCard(){
+        return this.card;
     }
 
     addCard(card){
-        this.cards.push(card);
+        this.card = card;
     }
 
     getCredits(){
@@ -70,6 +74,14 @@ export default class Store {
 
     addPreAuth(preAuth){
         this.preAuths.push(preAuth);
+    }
+
+    getRefunds(){
+        return this.refunds;
+    }
+
+    addRefund(refund){
+        this.refunds.push(refund);
     }
 
 

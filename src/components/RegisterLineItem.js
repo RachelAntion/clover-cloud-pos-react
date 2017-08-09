@@ -12,7 +12,7 @@ export default class RegisterLineItem extends React.Component {
         return (
             <div className="space_between_row">
                 <div>{quantity}</div>
-                <div>{title}</div>
+                <div className="register_item_title">{title}</div>
                 <div>{price}</div>
             </div>
         )
