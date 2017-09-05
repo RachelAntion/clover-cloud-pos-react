@@ -1,10 +1,14 @@
+import CurrencyFormatter from "../utils/CurrencyFormatter";
+
 export default class OrderPayment {
 
     constructor(id) {
         this.id = id;
+        this.cloverPaymentId = null;
         this.status = "OPEN";
-        this.amount = 0.00;
-        this.tipAmount = 0.00;
+        this.amount = 0;
+        this.taxAmount = 0;
+        this.tipAmount = 0;
         this.date = new Date();
         this.tender="Credit Card";
         this.transactionType = '';
@@ -12,14 +16,17 @@ export default class OrderPayment {
         this.employee = "Employee";
         this.deviceId = "C03458DF83458";
         this.transactionState="CLOSED";
-        this.externalPaymentId;
+        this.externalPaymentId = null;
         this.refunds = [];
-        // this.cashBackAmount = 0.00;
+        this.cashBackAmount = 0.00;
         this.entryMethod = "SWIPED";
+        this.cloverOrderId = null;
+        this.cardType = null;
+        this.formatter = new CurrencyFormatter();
     }
 
     getId(){
-        return this.id;
+        return this.cloverPaymentId;
     }
 
     setStatus(status){
@@ -63,10 +70,49 @@ export default class OrderPayment {
     }
 
     getTotal(){
-        return (parseFloat(this.amount) + parseFloat(this.tipAmount)).toFixed(2);
+        return parseFloat(parseFloat(this.formatter.convertToFloat(this.amount)) + parseFloat(this.formatter.convertToFloat(this.tipAmount))).toFixed(2);
+    }
+
+    getTotalForRequest(){
+
     }
 
     addRefund(refund){
+        if(this.refunds === undefined){
+            this.refunds = [];
+        }
         this.refunds.push(refund);
+    }
+
+    setOrderId(id){
+        this.orderId = id;
+    }
+
+    getOrderId(){
+        return this.orderId;
+    }
+
+    setExternalPaymentId(id){
+        this.externalPaymentId = id;
+    }
+
+    getExternalPaymentId(){
+        return this.externalPaymentId;
+    }
+
+    setCashback(cashback){
+        this.cashBackAmount = cashback;
+    }
+
+    getCashback(){
+        return this.cashBackAmount;
+    }
+
+    setCardType(cardType){
+        this.cardType = cardType;
+    }
+
+    getCardType(){
+        return this.cardType;
     }
 }

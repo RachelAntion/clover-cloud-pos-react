@@ -1,5 +1,6 @@
 import React from 'react';
 // import CurrencyFormatter from "./CurrencyFormatter";
+import ImageHelper from "../utils/ImageHelper";
 
 export default class TransactionRow extends React.Component {
 
@@ -7,6 +8,7 @@ export default class TransactionRow extends React.Component {
         super(props);
         this.transaction = this.props.transaction[0];
         console.log(this.transaction);
+        this.imageHelper = new ImageHelper();
         // this.formatter = new CurrencyFormatter();
     }
 
@@ -27,6 +29,7 @@ export default class TransactionRow extends React.Component {
         else if (paymentType == 'Refund'){
             displayTotal=(<span className="red_text">(${total})</span>);
         }
+        let image = this.imageHelper.getCardTypeImage(this.transaction.cardType);
 
         return (
             <div className="transaction_row" onClick={() => {onClick(this.transaction)}}>
@@ -41,9 +44,12 @@ export default class TransactionRow extends React.Component {
                 <div className="transaction_row_column">
                     <div> {displayTotal}</div>
                 </div>
-                <div className="transaction_row_column">
-                    <div>{tender}</div>
-                    <div>{cardDetails}</div>
+                <div className="transaction_tender">
+                    <img className="tender_logo" src={image}/>
+                    <div className="transaction_tender_column">
+                        <div>{tender}</div>
+                        <div>{cardDetails}</div>
+                    </div>
                 </div>
                 <div className="transaction_row_column last_item">
                     <div>

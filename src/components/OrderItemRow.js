@@ -1,5 +1,5 @@
 import React from 'react';
-import CurrencyFormatter from "./CurrencyFormatter";
+import CurrencyFormatter from "./../utils/CurrencyFormatter";
 
 export default class OrderItemRow extends React.Component {
 
@@ -7,7 +7,7 @@ export default class OrderItemRow extends React.Component {
         super(props);
         this.orderItem = this.props.orderItem;
         this.formatter = new CurrencyFormatter();
-        console.log(this.orderItem);
+        //console.log(this.orderItem);
     }
 
     render(){

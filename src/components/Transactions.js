@@ -14,7 +14,6 @@ export default class Transactions extends React.Component {
     }
 
     goToPayment(orderPayment){
-        console.log("go to payment");
         browserHistory.push({pathname: '/payment', state : {payment : orderPayment}});
     }
 

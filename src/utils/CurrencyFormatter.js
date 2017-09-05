@@ -7,6 +7,9 @@ export default class CurrencyFormatter {
         else {
             let number = currency.toString();
             let first = number.substr(0, number.length - 2);
+            if(first.length < 1){
+                first = "0";
+            }
             let last = number.substr(number.length - 2);
             return "$" + first + "." + last;
         }
@@ -18,17 +21,20 @@ export default class CurrencyFormatter {
     }
 
     convertToFloat(currency){
+        if(currency === 0){
+            return parseFloat(0.00).toFixed(2);
+        }
         let number = currency.toString();
         let first = number.substr(0,number.length-2);
         let last =  number.substr(number.length-2);
         let float = first+"."+last;
-        return parseFloat(float);
+        return parseFloat(float).toFixed(2);
     }
 
     convertFromFloat(currency){
-        let parts = currency.split('.');
+        //console.log("convertFromFloat", currency);
+        let parts = currency.toString().split('.');
         const newTotal = parts[0] + parts[1];
-        console.log(newTotal);
         return parts[0] + parts[1];
     }
 }

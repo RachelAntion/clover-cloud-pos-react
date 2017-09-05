@@ -2,6 +2,10 @@ import React from 'react';
 import PaymentRow from "./PaymentRow";
 import ButtonNormal from "./ButtonNormal";
 import Refund from "../Models/Refund";
+import CurrencyFormatter from "./../utils/CurrencyFormatter";
+import Checkmark from './Checkmark';
+import sdk from 'remote-pay-cloud-api';
+import clover from 'remote-pay-cloud';
 
 export default class Payment extends React.Component {
     constructor(props){
@@ -13,7 +17,7 @@ export default class Payment extends React.Component {
         }
         if(this.props.location.state != null){
             this.payment = this.props.location.state.payment;
-            if(this.payment.refunds.length >= 1){
+            if(this.payment.refunds !== undefined){
                 this.setState({refund: true});
             }
         }
@@ -22,7 +26,8 @@ export default class Payment extends React.Component {
         this.finishAdjustTip = this.finishAdjustTip.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.makeRefund = this.makeRefund.bind(this);
-
+        this.cloverConnector = this.props.cloverConnection.cloverConnector;
+        this.formatter = new CurrencyFormatter();
         console.log(this.payment);
     }
 
@@ -44,15 +49,25 @@ export default class Payment extends React.Component {
     }
 
     makeRefund(){
-        let refund = new Refund(this.payment.getTotal());
-        this.payment.addRefund(refund);
+        let _refund = new Refund(this.payment.amount);
+        console.log(this.payment);
+        this.payment.addRefund(_refund);
         this.payment.setTransactionType("Refund");
         this.setState({ showRefund: true});
+        console.log(_refund);
+
+        let refund = new sdk.remotepay.RefundPaymentRequest();
+        refund.setAmount(this.formatter.convertFromFloat(this.payment.getTotal()));
+        refund.setPaymentId(this.payment.id);
+        refund.setOrderId(this.payment.orderId);
+        refund.setFullRefund(true);
+        console.log('makeRefund', refund);
+        this.cloverConnector.refundPayment(refund);
     }
 
     render(){
         const date = this.payment.date;
-        const total = parseFloat(this.payment.amount).toFixed(2);
+        const total = this.formatter.formatCurrency(this.payment.amount);
         const tender = this.payment.tender;
         const cardDetails = this.payment.cardDetails;
         const employee = this.payment.employee;
@@ -67,17 +82,22 @@ export default class Payment extends React.Component {
         // }
         let showTips = true;
         let tipText = "Adjust Tip";
-        let tipAmount = this.payment.tipAmount;
+        let tipAmount = parseFloat(this.formatter.convertToFloat(this.payment.tipAmount)).toFixed(2);
         if(tipAmount ===0 || tipAmount <= 0){
-            tipAmount = "0.00";
             showTips = false;
+            tipAmount = "0.00";
             tipText = "Add Tip";
         }
         const showRefunds = this.state.showRefund;
         const showTipAdj = this.state.showTipAdjust;
-        let absTotal = (parseFloat(total) + parseFloat(tipAmount)).toFixed(2);
+        let absTotal = parseFloat(parseFloat(this.formatter.convertToFloat(this.payment.amount)) + parseFloat(this.formatter.convertToFloat(this.payment.tipAmount))).toFixed(2);
         if(this.state.showRefund){
-            absTotal = "0.00";
+            absTotal = "$0.00";
+        }
+        let check = false;
+        let status = this.payment.status;
+        if(status === "SUCCESS"){
+            check = true;
         }
 
         return(
@@ -90,8 +110,9 @@ export default class Payment extends React.Component {
                                 <div className="space_between_row space_under">
                                     <div><strong>Payment</strong></div>
                                     <div className="middle_grow"><strong>{date.toLocaleDateString()}  •  {date.toLocaleTimeString()}</strong></div>
-                                    <div><strong>${total}</strong></div>
+                                    <div><strong>{total}</strong></div>
                                 </div>
+                                {check && <div className="row"><Checkmark/><div className="payment_successful">Payment successful</div></div>}
                                 <div className="payment_details_list">
                                     <PaymentRow left="Tender:" right={tender}/>
                                     <PaymentRow left="Card Details:" right={cardDetails}/>
@@ -118,7 +139,7 @@ export default class Payment extends React.Component {
                                         <div key={'refund-'+i} className="space_between_row space_under">
                                             <div><strong>Refund</strong></div>
                                             <div className="middle_grow"><strong>{refund.date.toLocaleDateString()}  •  {refund.date.toLocaleTimeString()}</strong></div>
-                                            <div><strong>${refund.amount}</strong></div>
+                                            <div><strong>{this.formatter.formatCurrency(refund.amount)}</strong></div>
                                         </div>)
                                 }, this)}
                             </div>

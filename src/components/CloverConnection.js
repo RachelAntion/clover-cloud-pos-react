@@ -2,19 +2,21 @@ import React from 'react';
 import clover from 'remote-pay-cloud';
 import ExampleCloverConnectorListener from "./POSCloverConnectorListener";
 
-// clover.DebugConfig.loggingEnabled = true;
+// sdk.DebugConfig.loggingEnabled = true;
 
 export default class Connect {
 
-    constructor(toggleConnectionState, setPairingCode, setStatus, duplicate, tipAdded, store){
+    constructor(toggleConnectionState, setPairingCode, setStatus, challenge, tipAdded, store, closeStatus, inputOptions){
         this.connected = false;
         this.toggleConnectionState = toggleConnectionState;
         this.setPairingCode = setPairingCode;
         this.setStatus = setStatus;
-        this.duplicate = duplicate;
+        this.challenge = challenge;
         this.tipAdded = tipAdded;
         this.cloverConnector = null;
         this.store = store;
+        this.closeStatus = closeStatus;
+        this.inputOptions = inputOptions;
     }
 
     getConnected (){
@@ -43,7 +45,7 @@ export default class Connect {
         }, this.toggleConnectionState, this.setConnected.bind(this), this.setPairingCode));
         this.cloverConnector = connector;
 
-        let connectorListener = new ExampleCloverConnectorListener(connector, this.setStatus, this.duplicate, this.tipAdded, this.store);
+        let connectorListener = new ExampleCloverConnectorListener(connector, this.setStatus, this.challenge, this.tipAdded, this.store, this.closeStatus, this.inputOptions);
         connector.addCloverConnectorListener(connectorListener);
         connector.initializeConnection();
 

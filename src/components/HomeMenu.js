@@ -1,6 +1,9 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import ButtonNormal from "./ButtonNormal";
+import clover from 'remote-pay-cloud';
+import sdk from 'remote-pay-cloud-api';
+import CurrencyFormatter from "./../utils/CurrencyFormatter";
 
 export default class HomeMenu extends React.Component {
     constructor(props) {
@@ -11,102 +14,78 @@ export default class HomeMenu extends React.Component {
             redirect : false,
         };
         this.store = this.props.store;
-        this.cloverConnector = this.props.cloverConnection.cloverConnector;
+        this.cloverConnector = this.props.cloverConnection.cloverConnector;''
         this.setStatus = this.props.setStatus;
-        this.vaultCard = this.vaultCard.bind(this);
-        console.log("HomeMenu: ", this.props);
+        this.preAuth = this.preAuth.bind(this);
+        this.formatter = new CurrencyFormatter;
+        //console.log("HomeMenu: ", this.props);
     }
 
-    // showNewOrder(){
-    //     this.setState({ showNewOrder: true });
-    // }
-    //
-    // closeNewOrder(){
-    //     this.setState({ showNewOrder: false });
-    // }
-    //
-    // closePreAuth(){
-    //     this.setState({ preAuthChosen : false});
-    // }
-    //
-    // saleChosen(){
-    //     console.log("Sale was chosen");
-    //     browserHistory.push({pathname: '/register', state : {saleType : 'Sale'}});
-    // }
-    //
-    // authChosen(){
-    //     console.log("Auth was chosen");
-    //     browserHistory.push({pathname: '/register', state : {saleType : 'Auth'}});
-    //
-    // }
-    //
-    // preAuthChosen(){
-    //     console.log("preAuth was chosen");
-    //     this.closeNewOrder();
-    //     this.setState({ preAuthChosen : true});
-    //     // browserHistory.push({pathname: '/preauth', state : {saleType : 'preauth'}});
-    // }
-    //
-    // openPreAuth(){
-    //     console.log("opening preauth");
-    //     browserHistory.push({pathname: '/register', state : {saleType : 'PreAuth'}});
-    // }
-
-    vaultCard(){
-        this.setStatus('Customer is Vaulting Card....');
-        this.cloverConnector.vaultCard(this.store.cardEntryMethods);
-        browserHistory.push({pathname: '/register', state : {saleType : 'Vaulted'}});
+    preAuth(){
+        browserHistory.push({pathname: '/register', state : {saleType : 'PreAuth'}});
     }
-
 
     render(){
-        // const newOrderPopup = this.state.showNewOrder;
-        // const preAuthPopup = this.state.preAuthChosen;
-
         return(
             <div className="home_menu">
-                {/*{newOrderPopup &&*/}
-                {/*<div className="popup_container popup">*/}
-                {/*<div className="close_popup" onClick={this.closeNewOrder}>x</div>*/}
-                {/*<div className="new_order_types">*/}
-                {/*<ButtonNormal title="Sale" onClick={this.saleChosen} extra="button_large" color="white"/>*/}
-                {/*<ButtonNormal title="Auth" onClick={this.authChosen} extra="button_large" color="white"/>*/}
-                {/*<ButtonNormal title="PreAuth" onClick={this.preAuthChosen} extra="button_large" color="white"/>*/}
-                {/*</div>*/}
-                {/*</div>}*/}
-                {/*{preAuthPopup &&*/}
-                {/*<div className="preauth_popup popup">*/}
-                {/*Please swipe your card*/}
-                {/*<div className="preauth_button_row">*/}
-                {/*<ButtonNormal title="Cancel" color="red" onClick={this.closePreAuth} extra="preauth_button"/>*/}
-                {/*<ButtonNormal title="Card Swiped" color="white" onClick={this.openPreAuth} extra="preauth_button"/>*/}
-                {/*</div>*/}
-                {/*</div>}*/}
-                <Link to="/register">
-                    <ButtonNormal title="New Order" color="white" extra="button_large"/>
-                </Link>
-                <Link to="/preauth">
-                    <ButtonNormal title="New Tab (PreAuth)" color="white" extra="button_large"/>
-                </Link>
-                <Link to="/orders">
-                    <ButtonNormal title="View Orders" color="white" extra="button_large"/>
-                </Link>
-                <ButtonNormal title="Vault Card" color="white" extra="button_large" onClick={this.vaultCard}/>
-                <Link to="/refunds">
-                    <ButtonNormal title="Manual Refunds / Credits" color="white" extra="button_large"/>
-                </Link>
-                <Link to="/transactions">
-                    <ButtonNormal title="Transactions" color="white" extra="button_large"/>
-                </Link>
-                <Link to="/custom-activities">
-                    <ButtonNormal title="Custom Activities" color="white" extra="button_large"/>
-                </Link>
-                <Link to="/device">
-                    <ButtonNormal title="Device" color="white" extra="button_large"/>
-                </Link>
-                <Link to="/recovery-options">
-                    <ButtonNormal title="Recovery Options" color="white" extra="button_large"/>
-                </Link>
+                <div className="home_row">
+                    <Link to="/register">
+                        <div className="home_button">
+                            <div className="home_title">New Order</div>
+                            <img className="home_icon" src={'images/new_order.png'}/>
+                        </div>
+                    </Link>
+                    <div className="home_button">
+                        <div className="home_title">New Tab (PreAuth)</div>
+                        <img className="home_icon" src={'images/new_tab.png'}  onClick={this.preAuth}/>
+                    </div>
+                    <Link to="/orders">
+                        <div className="home_button">
+                            <div className="home_title">View Orders</div>
+                            <img className="home_icon" src={'images/orders.png'}/>
+                        </div>
+                    </Link>
+                </div>
+                <div className="home_row">
+                    <Link to="/vault-card">
+                        <div className="home_button">
+                            <div className="home_title">Vault Card</div>
+                            <img className="home_icon" src={'images/card.png'}/>
+                        </div>
+                    </Link>
+                    <Link to="/refunds">
+                        <div className="home_button">
+                            <div className="home_title">Manual Refunds / Credit</div>
+                            <img className="home_icon" src={'images/refund.png'}/>
+                        </div>
+                    </Link>
+                    <Link to="/transactions">
+                        <div className="home_button">
+                            <div className="home_title">Transactions</div>
+                            <img className="home_icon" src={'images/transactions.png'}/>
+                        </div>
+                    </Link>
+                </div>
+                <div className="home_row">
+                    <Link to="/custom-activities">
+                        <div className="home_button">
+                            <div className="home_title">Custom Activities</div>
+                            <img className="home_icon" src={'images/custom_activity.png'}/>
+                        </div>
+                    </Link>
+                    <Link to="/device">
+                        <div className="home_button">
+                            <div className="home_title">Device</div>
+                            <img className="home_icon" src={'images/device.png'}/>
+                        </div>
+                    </Link>
+                    <Link to="/recovery-options">
+                        <div className="home_button">
+                            <div className="home_title">Recovery Options</div>
+                            <img className="home_icon" src={'images/recovery.png'}/>
+                        </div>
+                    </Link>
+                </div>
             </div>
         );
     }

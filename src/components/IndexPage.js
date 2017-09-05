@@ -4,7 +4,6 @@ import HomeMenu from "./HomeMenu";
 export default class IndexPage extends React.Component {
     constructor(props) {
         super(props);
-        console.log('index',this.props);
     }
 
     render() {

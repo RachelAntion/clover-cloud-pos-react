@@ -1,4 +1,4 @@
-import CurrencyFormatter from "../components/CurrencyFormatter";
+import CurrencyFormatter from "../utils/CurrencyFormatter";
 
 export default class OrderItem {
 
