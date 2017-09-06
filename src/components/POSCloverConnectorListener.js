@@ -9,7 +9,7 @@ import CardDataHelper from "./../utils/CardDataHelper";
 
 export default class POSCloverConnectorListener extends clover.remotepay.ICloverConnectorListener{
 
-    constructor(cloverConnector, setStatus, challenge, tipAdded, store, closeStatus, inputOptions) {
+    constructor(cloverConnector, setStatus, challenge, tipAdded, store, closeStatus, inputOptions, confirmSignature) {
         super();
         this.cloverConnector = cloverConnector;
         this.setStatus = setStatus;
@@ -23,20 +23,21 @@ export default class POSCloverConnectorListener extends clover.remotepay.IClover
         this.setPaymentStatus = this.setPaymentStatus.bind(this);
         this.createOrderPayment = this.createOrderPayment.bind(this);
         this.closeStatus = closeStatus;
+        this.confirmSignature = confirmSignature;
     }
 
 
     onReady(merchantInfo){
     }
 
-    onVerifySignatureRequest (request) {
-        this.cloverConnector.acceptSignature(request);
-    }
+    //onVerifySignatureRequest (request) {
+    //    this.cloverConnector.acceptSignature(request);
+    //}
 
     onConfirmPaymentRequest(request) {
         console.log("confirmPayment :" ,request);
         if(request.challenges.length > 0){
-            this.challenge(request.challenges[0].message, request);
+            this.challenge(request.challenges[0], request);
         }
         else {
             this.setStatus("confirming payment...");
@@ -213,6 +214,12 @@ export default class POSCloverConnectorListener extends clover.remotepay.IClover
             //console.log("device activity ended: ", this.lastDeviceEvent);
             this.closeStatus();
         }
+
+    }
+
+    onVerifySignatureRequest(request){
+        //console.log("verifySignatureRequest", request);
+        this.confirmSignature(request);
 
     }
 

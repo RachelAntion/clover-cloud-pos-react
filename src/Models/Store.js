@@ -24,13 +24,13 @@ export default class Store {
         this.forceOfflinePayments = true;
         this.allowOfflinePayments = true;
         this.approveOfflinePaymentWithoutPrompt = true;
-        //this.signatureEntryLocation = undefined;
-        this.signatureEntryLocation = sdk.payments.DataEntryLocation.NONE;
+        this.signatureEntryLocation = undefined;
+        //this.signatureEntryLocation = sdk.payments.DataEntryLocation.NONE;
         //this.tipMode = undefined;
         this.tipMode = sdk.payments.TipMode.NO_TIP;
         this.tipAmount = 0;
         this.signatureThreshold = 0;
-        this.disableDuplicateChecking = true;
+        this.disableDuplicateChecking =true;
         this.disableReceiptOptions = true;
         this.disablePrinting = false;
         this.automaticSignatureConfirmation = true;

@@ -40,6 +40,7 @@ body{
 
 h2 {
     font-weight: 500;
+    margin-top: 0px;
 }
 
 h3{
@@ -111,6 +112,10 @@ h3{
 .center{
     vertical-align: middle;
     justify-content: center;
+    align-items: center;
+}
+
+.align_center{
     align-items: center;
 }
 
@@ -247,6 +252,11 @@ h3{
     flex-direction: row;
     flex-grow: 1;
     padding-bottom: 10px;
+}
+
+.signature{
+    height: 175px;
+    width: 380px;
 }
 
 .column{
@@ -1095,4 +1105,31 @@ input:checked + .slider:before {
     top: 8px;
     float: left;
     width: 0px;
+}
+
+.order_detail_icon{
+    height: 50px;
+    margin-right: 10px;
+}
+
+.order_detail_column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.preAuth_amount .amount_tooltip {
+    visibility: hidden;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    padding: 20px;
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0 0 4px #000000;
+    left: 258px;
+}
+
+.preAuth_amount:hover .amount_tooltip {
+    visibility: visible;
 }

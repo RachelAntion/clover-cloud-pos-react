@@ -13,11 +13,12 @@ export default class Layout extends React.Component {
         super(props);
         this.state = {
             connected : false,
-            uriText : "ws://192.168.0.9:12345/remote_pay",
+            uriText : "wss://192.168.0.9:12345/remote_pay",
             pairingCode: '',
             statusText: '',
             statusToggle: false,
             challenge: false,
+            challengeContent: null,
             request: null,
             saleFinished: false,
             tipAmount: 0,
@@ -27,6 +28,8 @@ export default class Layout extends React.Component {
             inputOptions: null,
             fadeBackground: false,
             responseFail: false,
+            signatureRequest: null,
+            showSignature: false
         };
         this.toggleConnectionState = this.toggleConnectionState.bind(this);
         this.setPairingCode = this.setPairingCode.bind(this);
@@ -35,15 +38,19 @@ export default class Layout extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.challenge = this.challenge.bind(this);
         this.acceptPayment = this.acceptPayment.bind(this);
+        this.rejectPayment = this.rejectPayment.bind(this);
         this.tipAdded = this.tipAdded.bind(this);
         this.closeStatus = this.closeStatus.bind(this);
         this.closeCardData = this.closeCardData.bind(this);
         this.inputOptions = this.inputOptions.bind(this);
         this.fadeBackground = this.fadeBackground.bind(this);
         this.unfadeBackground = this.unfadeBackground.bind(this);
+        this.confirmSignature = this.confirmSignature.bind(this);
+        this.acceptSignature = this.acceptSignature.bind(this);
+        this.rejectSignature = this.rejectSignature.bind(this);
         this.store = new Store();
         this.initStore();
-        this.cloverConnection = new Connect(this.toggleConnectionState, this.setPairingCode, this.setStatus, this.challenge, this.tipAdded, this.store, this.closeStatus, this.inputOptions);
+        this.cloverConnection = new Connect(this.toggleConnectionState, this.setPairingCode, this.setStatus, this.challenge, this.tipAdded, this.store, this.closeStatus, this.inputOptions, this.confirmSignature);
     }
 
     initStore(){
@@ -65,8 +72,34 @@ export default class Layout extends React.Component {
         this.setState({ pairingCode: pairingCode});
     }
 
+    confirmSignature(request){
+        this.closeStatus();
+        let signature = request.signature;
+        this.setState({showSignature: true, fadeBackground: true, signatureRequest: request });
+        const ctx = this.refs.canvas.getContext('2d');
+        ctx.scale(0.25, 0.25);
+        for (var strokeIndex = 0; strokeIndex < signature.strokes.length; strokeIndex++) {
+            var stroke = signature.strokes[strokeIndex];
+            ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+            for (var pointIndex = 1; pointIndex < stroke.points.length; pointIndex++) {
+                ctx.lineTo(stroke.points[pointIndex].x, stroke.points[pointIndex].y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    acceptSignature(){
+        this.cloverConnection.cloverConnector.acceptSignature(this.state.signatureRequest);
+        this.closeSignature();
+    }
+
+    rejectSignature(){
+        this.cloverConnection.cloverConnector.rejectSignature(this.state.signatureRequest);
+        this.closeSignature();
+    }
+
     setStatus(message, reason) {
-        console.log(message, reason);
+        //console.log(message, reason);
         if((typeof message === "object") && (message !== null)){
             //console.log("isArray", message);
             this.setState({statusArray: message,  statusToggle: false, fadeBackground: true, responseFail: false});
@@ -112,6 +145,10 @@ export default class Layout extends React.Component {
         this.setState({statusArray : null, fadeBackground: false});
     }
 
+    closeSignature(){
+        this.setState({showSignature: false, fadeBackground: false});
+    }
+
 
     closeStatus(){
         //console.log('closeStatus');
@@ -127,14 +164,18 @@ export default class Layout extends React.Component {
         this.setState({tipAmount : tipAmount });
     }
 
-    challenge(message, request){
-        this.setState({statusToggle: true, statusText: message, challenge : true, request : request, inputOptions: null});
+    challenge(challenge, request){
+        this.setState({statusToggle: true, statusText: challenge.message, challenge : true, request : request, inputOptions: null, challengeContent: challenge});
     }
 
     acceptPayment(){
         this.cloverConnection.cloverConnector.acceptPayment(this.state.request.payment);
-        this.setState({challenge : false, statusToggle : false });
-        //this.setStatus("Customer choosing receipt type...");
+        this.setState({challenge : false, statusToggle : false, fadeBackground: false});
+    }
+
+    rejectPayment(){
+        this.cloverConnection.cloverConnector.rejectPayment(this.state.request.payment, this.state.challengeContent);
+        this.setState({challenge: false, statusToggle: false, fadeBackground: false, responseFail: true});
     }
 
     inputOptions(io){
@@ -201,8 +242,7 @@ export default class Layout extends React.Component {
             inputContainer = (<div className="input_buttons">{inputButtons}</div>);
         }
         let showChallenge = this.state.challenge;
-        //console.log('showCardData', showCardData, 'showStatus: ', showStatus, 'cardData', cardData);
-        //{showCardData && {cardData}}
+        let showSignature = this.state.showSignature;
         return (
             <div className="app-content">
                 {fadeBackground &&
@@ -217,6 +257,16 @@ export default class Layout extends React.Component {
                     </div>
                     <div className="filler_space"/>
                 </div>
+                {showSignature &&
+                    <div className="popup popup_container">
+                        <div className="close_popup" onClick={this.closeSignature}>X</div>
+                    <canvas className="signature" ref="canvas"/>
+                        <div className="reject_accept">
+                            <ButtonNormal title="Reject" color="white" extra="left dialog_button" onClick={this.rejectSignature}/>
+                            <ButtonNormal title="Accept" color="white" extra="right dialog_button" onClick={this.acceptSignature}/>
+                        </div>
+                        </div>
+                }
                 {showStatusArray &&
                 <div className="card_data popup">
                     <div className="close_popup" onClick={this.closeCardData}>X</div>
@@ -234,7 +284,7 @@ export default class Layout extends React.Component {
                     }
                     {showChallenge &&
                     <div className="reject_accept">
-                        <ButtonNormal title="Reject" color="white" extra="left dialog_button" />
+                        <ButtonNormal title="Reject" color="white" extra="left dialog_button" onClick={this.rejectPayment} />
                         <ButtonNormal title="Accept" color="white" extra="right dialog_button" onClick={this.acceptPayment}/>
                     </div>
                     }

@@ -6,7 +6,7 @@ import ExampleCloverConnectorListener from "./POSCloverConnectorListener";
 
 export default class Connect {
 
-    constructor(toggleConnectionState, setPairingCode, setStatus, challenge, tipAdded, store, closeStatus, inputOptions){
+    constructor(toggleConnectionState, setPairingCode, setStatus, challenge, tipAdded, store, closeStatus, inputOptions, confirmSignature){
         this.connected = false;
         this.toggleConnectionState = toggleConnectionState;
         this.setPairingCode = setPairingCode;
@@ -17,6 +17,7 @@ export default class Connect {
         this.store = store;
         this.closeStatus = closeStatus;
         this.inputOptions = inputOptions;
+        this.confirmSignature = confirmSignature;
     }
 
     getConnected (){
@@ -45,7 +46,7 @@ export default class Connect {
         }, this.toggleConnectionState, this.setConnected.bind(this), this.setPairingCode));
         this.cloverConnector = connector;
 
-        let connectorListener = new ExampleCloverConnectorListener(connector, this.setStatus, this.challenge, this.tipAdded, this.store, this.closeStatus, this.inputOptions);
+        let connectorListener = new ExampleCloverConnectorListener(connector, this.setStatus, this.challenge, this.tipAdded, this.store, this.closeStatus, this.inputOptions, this.confirmSignature);
         connector.addCloverConnectorListener(connectorListener);
         connector.initializeConnection();
 

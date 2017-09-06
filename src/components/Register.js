@@ -10,6 +10,7 @@ import OrderPayment from "../Models/OrderPayment";
 import RegisterLineItem from "./RegisterLineItem";
 import sdk from 'remote-pay-cloud-api';
 import clover from 'remote-pay-cloud';
+import ImageHelper from "../utils/ImageHelper";
 
 export default class Register extends React.Component {
     constructor(props) {
@@ -50,7 +51,9 @@ export default class Register extends React.Component {
             preAuth: null,
             responseFail: false,
             fadeBackground: false,
+            amountExceeded: false
         };
+        this.imageHelper = new ImageHelper();
         this.setStatus = this.props.setStatus;
         this.closeStatus = this.props.closeStatus;
         this.promptPreAuth = this.promptPreAuth.bind(this);
@@ -347,6 +350,12 @@ export default class Register extends React.Component {
             payNoItems: false,
             saveNoItems: false,
         });
+        if(this.saleMethod === "PreAuth") {
+            console.log(this.order.getTotal(), this.state.preAuthAmount);
+            if(parseFloat(this.order.getTotal()) > parseFloat(this.state.preAuthAmount)){
+                this.setState({amountExceeded: true});
+            }
+        }
         this.updateDisplayOrder();
     }
 
@@ -659,8 +668,15 @@ export default class Register extends React.Component {
         let tipProvided = (this.state.tipMode === "TIP_PROVIDED");
         let sigThreshold = (this.state.signatureEntryLocation !== 'NONE' && this.state.signatureEntryLocation !== 'ON_PAPER');
         let preAuth = null;
+        let image = "images/tender_default.png";
         if(this.state.preAuth !== null) {
             showPreAuthHeader = true;
+            image = this.imageHelper.getCardTypeImage(this.state.preAuth.preAuth.payment.cardTransaction.cardType);
+        }
+        let amountSpan = "";
+        let amountExceeded = this.state.amountExceeded;
+        if(amountExceeded){
+            amountSpan = "red_text";
         }
 
         return(
@@ -933,16 +949,24 @@ export default class Register extends React.Component {
                 <div className="register_left">
                     <h2>{newOrder}</h2>
                     {vaultedCard &&
-                    <div>
-                        <div>{this.card.name}</div>
-                        <div>{this.card.card.first6}xxxxxx{this.card.card.last4}</div>
+                    <div className="row">
+                        <img className="order_detail_icon" src="images/user.png"/>
+                        <div className="order_detail_column">
+                            <div>{this.card.name}</div>
+                            <div>{this.card.card.first6}xxxxxx{this.card.card.last4}</div>
+                        </div>
                     </div>
                     }
                     {showPreAuthHeader &&
-                    <div>
-                        <div>Name: {this.state.preAuth.name}</div>
-                        <div>Amount: ${this.state.preAuthAmount}</div>
-                        <div>Card: {this.state.preAuth.preAuth.payment.cardTransaction.cardType} {this.state.preAuth.preAuth.payment.cardTransaction.last4}</div>
+                    <div className="row">
+                        <img className="order_detail_icon" src={image}/>
+                        <div className="order_detail_column">
+                            <div>Name: {this.state.preAuth.name}</div>
+                            <div className="preAuth_amount"><span className={amountSpan}> Amount: ${this.state.preAuthAmount}</span>
+                                {amountExceeded && <span className="amount_tooltip">The total exceeds the PreAuth amount, payment may not go through</span>}
+                            </div>
+                            <div>Card: {this.state.preAuth.preAuth.payment.cardTransaction.cardType} {this.state.preAuth.preAuth.payment.cardTransaction.last4}</div>
+                        </div>
                     </div>
                     }
                     <div className="register_sale_items">
