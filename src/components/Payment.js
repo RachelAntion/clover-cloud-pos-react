@@ -14,31 +14,29 @@ export default class Payment extends React.Component {
             showTipAdjust: false,
             showRefund: false,
             tipAmount: 0.00,
+            refundDisabled: false
         }
-        if(this.props.location.state != null){
-            this.payment = this.props.location.state.payment;
-            if(this.payment.refunds !== undefined){
-                this.setState({refund: true});
-            }
-        }
-        console.log(this.state.total);
         this.adjustTip = this.adjustTip.bind(this);
         this.finishAdjustTip = this.finishAdjustTip.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.makeRefund = this.makeRefund.bind(this);
+        if(this.props.location.state != null) {
+            this.payment = this.props.location.state.payment;
+        }
         this.cloverConnector = this.props.cloverConnection.cloverConnector;
+        this.store = this.props.store;
         this.formatter = new CurrencyFormatter();
         console.log(this.payment);
     }
 
-    adjustTip(tipAmount){
+    adjustTip(){
         console.log("adjust tip");
         this.setState({showTipAdjust : true});
     }
 
     finishAdjustTip(){
         this.setState({showTipAdjust: false});
-        console.log("tip amount", this.state.tipAmount);
+        //console.log("tip amount", this.state.tipAmount);
         let tempTip = parseFloat(this.state.tipAmount).toFixed(2);
         this.payment.setTipAmount(tempTip);
         console.log(this.payment);
@@ -49,20 +47,32 @@ export default class Payment extends React.Component {
     }
 
     makeRefund(){
-        let _refund = new Refund(this.payment.amount);
-        console.log(this.payment);
-        this.payment.addRefund(_refund);
-        this.payment.setTransactionType("Refund");
-        this.setState({ showRefund: true});
-        console.log(_refund);
+        //let _refund = new Refund(this.payment.amount);
+        //console.log(this.payment);
+        //this.payment.addRefund(_refund);
+        //this.payment.setTransactionType("Refund");
+        //console.log(_refund);
 
         let refund = new sdk.remotepay.RefundPaymentRequest();
-        refund.setAmount(this.formatter.convertFromFloat(this.payment.getTotal()));
-        refund.setPaymentId(this.payment.id);
-        refund.setOrderId(this.payment.orderId);
+        //refund.setAmount(this.formatter.convertFromFloat(this.payment.getTotal()));
+        refund.setPaymentId(this.payment.cloverPaymentId);
+        refund.setOrderId(this.payment.cloverOrderId);
         refund.setFullRefund(true);
         console.log('makeRefund', refund);
         this.cloverConnector.refundPayment(refund);
+    }
+
+    componentWillReceiveProps(newProps) {
+        if(newProps.refundSuccess){
+            this.payment = this.store.getPaymentByCloverId(this.payment.cloverPaymentId);
+            this.setState({ showRefund: true, refundDisabled: true});
+        }
+    }
+
+    componentDidMount(){
+            if(this.payment.refunds !== undefined){
+                this.setState({showRefund: true, refundDisabled: true});
+            }
     }
 
     render(){
@@ -82,7 +92,7 @@ export default class Payment extends React.Component {
         // }
         let showTips = true;
         let tipText = "Adjust Tip";
-        let tipAmount = parseFloat(this.formatter.convertToFloat(this.payment.tipAmount)).toFixed(2);
+        let tipAmount = parseFloat(this.formatter.convertToFloat(this.payment.getTipAmount())).toFixed(2);
         if(tipAmount ===0 || tipAmount <= 0){
             showTips = false;
             tipAmount = "0.00";
@@ -90,7 +100,7 @@ export default class Payment extends React.Component {
         }
         const showRefunds = this.state.showRefund;
         const showTipAdj = this.state.showTipAdjust;
-        let absTotal = parseFloat(parseFloat(this.formatter.convertToFloat(this.payment.amount)) + parseFloat(this.formatter.convertToFloat(this.payment.tipAmount))).toFixed(2);
+        let absTotal = parseFloat(parseFloat(this.formatter.convertToFloat(this.payment.amount)) + parseFloat(this.formatter.convertToFloat(this.payment.getTipAmount()))).toFixed(2);
         if(this.state.showRefund){
             absTotal = "$0.00";
         }
@@ -162,9 +172,9 @@ export default class Payment extends React.Component {
                         </div>
                     </div>
                     <div className="column">
-                        <ButtonNormal title="Refund" color="red" extra="add_tip" onClick={this.makeRefund}/>
-                        <ButtonNormal title="Void Payment" color="white" extra="add_tip" onClick={this.adjustTip}/>
-                        <ButtonNormal title={tipText} color="white" extra="add_tip" onClick={this.adjustTip}/>
+                        <ButtonNormal title="Refund" color="red" extra="add_tip" onClick={this.makeRefund} disabled={this.state.refundDisabled}/>
+                        <ButtonNormal title="Void Payment" color="white" extra="add_tip" onClick={this.adjustTip} disabled={this.state.refundDisabled}/>
+                        <ButtonNormal title={tipText} color="white" extra="add_tip" onClick={this.adjustTip} disabled={this.state.refundDisabled}/>
                     </div>
                 </div>
             </div>

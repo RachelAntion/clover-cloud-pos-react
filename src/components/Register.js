@@ -69,6 +69,7 @@ export default class Register extends React.Component {
         this.cardChosen = this.cardChosen.bind(this);
         this.vaultedCardChosen = this.vaultedCardChosen.bind(this);
         this.closePreAuth = this.closePreAuth.bind(this);
+        this.exitPreAuth = this.exitPreAuth.bind(this);
         this.closeSettings = this.closeSettings.bind(this);
         this.choosePaymentMethod = this.choosePaymentMethod.bind(this);
         this.closePaymentMethods = this.closePaymentMethods.bind(this);
@@ -351,7 +352,6 @@ export default class Register extends React.Component {
             saveNoItems: false,
         });
         if(this.saleMethod === "PreAuth") {
-            console.log(this.order.getTotal(), this.state.preAuthAmount);
             if(parseFloat(this.order.getTotal()) > parseFloat(this.state.preAuthAmount)){
                 this.setState({amountExceeded: true});
             }
@@ -434,12 +434,12 @@ export default class Register extends React.Component {
             else{
                 this.setState({showSaleMethod: true, makingSale: true});
             }
-
+            this.fadeBackground();
         }
         else{
             this.setState({payNoItems : true, saveNoItems : false});
         }
-        this.fadeBackground();
+
     }
     closeSaleMethod(){
         this.setState({showSaleMethod: false, makingSale: false, fadeBackground: false});
@@ -447,6 +447,11 @@ export default class Register extends React.Component {
 
     closeSettings(){
         this.setState({showSettings: false, makingSale: false, fadeBackground: false});
+    }
+
+    exitPreAuth(){
+        this.setState({promptPreAuth: false, fadeBackground: false});
+        this.saleMethod = null;
     }
 
     saleChosen(){
@@ -686,53 +691,56 @@ export default class Register extends React.Component {
                 }
                 {promptPreAuth &&
                 <div className="popup popup_container">
-                    <div className="row center row_padding">
-                        <div className="input_title">Enter Name for PreAuth:</div>
-                        <input className="input_input" type="text" value={this.state.preAuthName} onChange={this.changePreAuthName}/>
-                    </div>
-                    <div className="row center row_padding">
-                        <div className="input_title">Enter Amount for PreAuth:</div>
-                        <div className="span_container">
-                            <span className="input_span">$</span>
-                            <input className="input_input" type="text" value={this.state.preAuthAmount} onChange={this.changePreAuthAmount}/>
+                    <div className="close_popup" onClick={this.exitPreAuth}>X</div>
+                    <div className="preauth_prompt">
+                        <div className="row center row_padding">
+                            <div className="input_title">Enter Name for PreAuth:</div>
+                            <input className="input_input" type="text" value={this.state.preAuthName} onChange={this.changePreAuthName}/>
                         </div>
-                    </div>
-                    <div className="row center margin_top">
-                        <ButtonNormal title="Continue" extra="preauth_button" color="white" onClick={this.doPreAuth} />
+                        <div className="row center row_padding">
+                            <div className="input_title">Enter Amount for PreAuth:</div>
+                            <div className="span_container">
+                                <span className="input_span">$</span>
+                                <input className="input_dollar_sign" type="text" value={this.state.preAuthAmount} onChange={this.changePreAuthAmount}/>
+                            </div>
+                        </div>
+                        <div className="row center margin_top">
+                            <ButtonNormal title="Continue" extra="preauth_button" color="white" onClick={this.doPreAuth} />
+                        </div>
                     </div>
                 </div>
                 }
                 {this.state.showSettings &&
                 <div className="settings">
-                    <div className="close_popup" onClick={this.closeSettings}>x</div>
-                    <h2 className="no_margin">{settingType} Settings</h2>
+                    <div className="close_popup" onClick={this.closeSettings}>X</div>
+                    <h2 className="left_margin">{settingType} Settings</h2>
                     <div className="transaction_settings">
                         <div className="settings_left settings_side">
                             <div className="settings_section">
                                 <h3>Card Options</h3>
                                 <div className="settings_row">
-                                    <div>Manual</div>
+                                    <div className="setting_title">Manual</div>
                                     <label className="switch">
                                         <input type="checkbox" ref="manual_entry" checked={this.state.manualCardEntry} onChange={this.toggleManual}/>
                                         <span className="slider round"/>
                                     </label>
                                 </div>
                                 <div className="settings_row">
-                                    <div>Swipe</div>
+                                    <div className="setting_title">Swipe</div>
                                     <label className="switch">
                                         <input type="checkbox" ref="swipe_entry" checked={this.state.swipeCardEntry} onChange={this.toggleSwipe}/>
                                         <span className="slider round"/>
                                     </label>
                                 </div>
                                 <div className="settings_row">
-                                    <div>Chip</div>
+                                    <div className="setting_title">Chip</div>
                                     <label className="switch">
                                         <input type="checkbox" ref="chip_entry" checked={this.state.chipCardEntry} onChange={this.toggleChip}/>
                                         <span className="slider round"/>
                                     </label>
                                 </div>
                                 <div className="settings_row">
-                                    <div>Contactless</div>
+                                    <div className="setting_title">Contactless</div>
                                     <label className="switch">
                                         <input type="checkbox" ref="contactless_entry" checked={this.state.contactlessCardEntry} onChange={this.toggleContactless}/>
                                         <span className="slider round"/>
@@ -744,54 +752,54 @@ export default class Register extends React.Component {
                                 <h3>Offline Payments</h3>
                                 <div className="settings_row">
                                     <div>Force Offline Payment</div>
-                                    <form>
-                                        <label>
+                                    <form className="row">
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="default" checked={this.state.forceOfflinePaymentSelection === 'default'} onChange={this.handleForceOfflineChange}/>
-                                            Default
-                                        </label>
-                                        <label>
+                                            <div>Default</div>
+                                        </div>
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="true" checked={this.state.forceOfflinePaymentSelection === 'true'} onChange={this.handleForceOfflineChange}/>
-                                            Yes
-                                        </label>
-                                        <label>
+                                            <div>Yes</div>
+                                        </div>
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="false" checked={this.state.forceOfflinePaymentSelection === 'false'} onChange={this.handleForceOfflineChange}/>
-                                            No
-                                        </label>
+                                            <div>No</div>
+                                        </div>
                                     </form>
                                 </div>
                                 <div className="settings_row">
                                     <div>Allow Offline Payments</div>
-                                    <form>
-                                        <label>
+                                    <form className="row">
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="default" checked={this.state.allowOfflinePaymentsSelection === 'default'} onChange={this.handleAllowOfflineChange}/>
-                                            Default
-                                        </label>
-                                        <label>
+                                            <div className="row">Default</div>
+                                        </div>
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="true" checked={this.state.allowOfflinePaymentsSelection === 'true'} onChange={this.handleAllowOfflineChange}/>
-                                            Yes
-                                        </label>
-                                        <label>
+                                            <div className="row">Yes</div>
+                                        </div>
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="false" checked={this.state.allowOfflinePaymentsSelection === 'false'} onChange={this.handleAllowOfflineChange}/>
-                                            No
-                                        </label>
+                                            <div className="row">No</div>
+                                        </div>
                                     </form>
                                 </div>
 
                                 <div className="settings_row">
                                     <div>Accept Offline w/o Prompt</div>
-                                    <form action="">
-                                        <label>
+                                    <form className="row">
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="default" checked={this.state.acceptOfflineSelection === 'default'} onChange={this.handleAcceptOfflineChange}/>
-                                            Default
-                                        </label>
-                                        <label>
+                                            <div className="row">Default</div>
+                                        </div>
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="true" checked={this.state.acceptOfflineSelection === 'true'} onChange={this.handleAcceptOfflineChange}/>
-                                            Yes
-                                        </label>
-                                        <label>
+                                            <div>Yes</div>
+                                        </div>
+                                        <div className="row">
                                             <input className="radio_button" type="radio" value="false" checked={this.state.acceptOfflineSelection === 'false'} onChange={this.handleAcceptOfflineChange}/>
-                                            No
-                                        </label>
+                                            <div>No</div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -874,7 +882,7 @@ export default class Register extends React.Component {
                             <div className="settings_section">
                                 <h3>Payment Acceptance</h3>
                                 <div className="settings_row">
-                                    <div>Disable Duplicate Payment Checking</div>
+                                    <div className="setting_title">Disable Duplicate Payment Checking</div>
                                     <label className="switch">
                                         <input type="checkbox" checked={this.state.disableDuplicate} onChange={this.toggleDisableDuplicate}/>
                                         <span className="slider round"/>
@@ -882,7 +890,7 @@ export default class Register extends React.Component {
                                 </div>
 
                                 <div className="settings_row">
-                                    <div>Disable Device Receipt Options Screen</div>
+                                    <div className="setting_title">Disable Device Receipt Options Screen</div>
                                     <label className="switch">
                                         <input type="checkbox" checked={this.state.disableReceipt} onChange={this.toggleDisableReceipt}/>
                                         <span className="slider round"/>
@@ -890,7 +898,7 @@ export default class Register extends React.Component {
                                 </div>
 
                                 <div className="settings_row">
-                                    <div>Disable Device Printing</div>
+                                    <div className="setting_title">Disable Device Printing</div>
                                     <label className="switch">
                                         <input type="checkbox" checked={this.state.disablePrinting} onChange={this.toggleDisablePrinting}/>
                                         <span className="slider round"/>
@@ -898,7 +906,7 @@ export default class Register extends React.Component {
                                 </div>
 
                                 <div className="settings_row">
-                                    <div>Automatically Confirm Signature</div>
+                                    <div className="setting_title">Automatically Confirm Signature</div>
                                     <label className="switch">
                                         <input type="checkbox" checked={this.state.confirmSignature} onChange={this.toggleConfirmSignature}/>
                                         <span className="slider round"/>
@@ -906,7 +914,7 @@ export default class Register extends React.Component {
                                 </div>
 
                                 <div className="settings_row">
-                                    <div>Automatically Confirm Payment Challenges</div>
+                                    <div className="setting_title">Automatically Confirm Payment Challenges</div>
                                     <label className="switch">
                                         <input type="checkbox" checked={this.state.confirmChallenges} onChange={this.toggleConfirmChallenges}/>
                                         <span className="slider round"/>
@@ -931,7 +939,7 @@ export default class Register extends React.Component {
                 </div>}
                 {showSaleMethods &&
                 <div className="popup_container popup">
-                    <div className="close_popup" onClick={this.closeSaleMethod}>x</div>
+                    <div className="close_popup" onClick={this.closeSaleMethod}>X</div>
                     <div className="payment_methods">
                         <ButtonNormal title="Sale" onClick={this.saleChosen} extra="button_large" color="white"/>
                         <ButtonNormal title="Auth" onClick={this.authChosen} extra="button_large" color="white"/>
@@ -939,7 +947,7 @@ export default class Register extends React.Component {
                 </div>}
                 {showPayMethods &&
                 <div className="popup_container popup">
-                    <div className="close_popup" onClick={this.closePaymentMethods}>x</div>
+                    <div className="close_popup" onClick={this.closePaymentMethods}>X</div>
                     <div className="payment_methods">
                         <ButtonNormal title={cardText} onClick={this.cardChosen} extra="button_large" color="white"/>
                         {showVaultedCard && <ButtonNormal title="Vaulted Card" onClick={this.vaultedCardChosen} extra="button_large" color="white"/>}

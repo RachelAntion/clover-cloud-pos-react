@@ -6,6 +6,7 @@ export default class TransactionRow extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props);
         this.transaction = this.props.transaction[0];
         console.log(this.transaction);
         this.imageHelper = new ImageHelper();

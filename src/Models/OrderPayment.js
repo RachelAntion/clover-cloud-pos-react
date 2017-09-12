@@ -50,7 +50,12 @@ export default class OrderPayment {
     }
 
     getTipAmount(){
-        return this.tipAmount;
+        if(this.tipAmount !== null){
+            return this.tipAmount;
+        }
+        else{
+            return 0;
+        }
     }
 
     getTender(){
@@ -70,7 +75,7 @@ export default class OrderPayment {
     }
 
     getTotal(){
-        return parseFloat(parseFloat(this.formatter.convertToFloat(this.amount)) + parseFloat(this.formatter.convertToFloat(this.tipAmount))).toFixed(2);
+        return parseFloat(parseFloat(this.formatter.convertToFloat(this.amount)) + parseFloat(this.formatter.convertToFloat(this.getTipAmount()))).toFixed(2);
     }
 
     getTotalForRequest(){

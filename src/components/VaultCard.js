@@ -77,14 +77,14 @@ export default class VaultCard extends React.Component {
                 </div>
                 }
                 <div className="card_list">
-                    <TitleBar title="Cards"/>
+                    <TitleBar title="Vaulted Cards Associated w/ Customers"/>
                     {cards.map((card, i) => {
                         return <VaultedCardRow key={'card-'+i} card={card} onClick={this.showOptions}/>;
                     })}
                 </div>
                 <div className="cards_footer">
                     <div className="filler_space"/>
-                    <ButtonNormal title="Vault Card" color="white" extra="cards_button" onClick={this.promptForName}/>
+                    <ButtonNormal title="Vault New Card" color="white" extra="cards_button" onClick={this.promptForName}/>
                 </div>
             </div>
         );

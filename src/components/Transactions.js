@@ -21,12 +21,12 @@ export default class Transactions extends React.Component {
 
         return(
             <div className="transactions">
-                    <div className="transactions_list">
-                        <TitleBar title="Transactions"/>
-                        {this.transactions.map(function (transaction, i) {
+                <div className="transactions_list">
+                    <TitleBar title="Transactions"/>
+                    {this.transactions.map(function (transaction, i) {
                             return <TransactionRow key={'transaction-'+i} transaction={transaction} onClick={this.goToPayment}/>
-                        }, this)}
-                    </div>
+                    }, this)}
+                </div>
             </div>
         );
     }

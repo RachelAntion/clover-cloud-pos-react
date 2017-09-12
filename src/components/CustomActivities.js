@@ -16,12 +16,14 @@ export default class CustomActivities extends React.Component {
         this.payloadChange = this.payloadChange.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.cloverConnector = this.props.cloverConnection.cloverConnector;
+        this.store = this.props.store;
         this.CUSTOM_ACTIVITY_PACKAGE = "com.clover.cfp.examples.";
     }
 
     startCustomActivity(){
         console.log("startCustomActivity");
         let activityId = this.CUSTOM_ACTIVITY_PACKAGE + this.state.selectedValue;
+        this.store.setCustomActivity(this.state.selectedValue);
         let nonBlocking = this.refs.non_blocking.checked;
         let payload = this.state.activityPayload;
 

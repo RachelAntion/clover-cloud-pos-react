@@ -4,6 +4,7 @@ import sdk from 'remote-pay-cloud-api';
 export default class Store {
 
     constructor() {
+        this.storeName = null;
         this.cardEntryMethods = clover.CardEntryMethods.DEFAULT;
         this.availableItems = [];
         this.orders = [];
@@ -24,8 +25,8 @@ export default class Store {
         this.forceOfflinePayments = true;
         this.allowOfflinePayments = true;
         this.approveOfflinePaymentWithoutPrompt = true;
-        this.signatureEntryLocation = undefined;
-        //this.signatureEntryLocation = sdk.payments.DataEntryLocation.NONE;
+        //this.signatureEntryLocation = undefined;
+        this.signatureEntryLocation = sdk.payments.DataEntryLocation.NONE;
         //this.tipMode = undefined;
         this.tipMode = sdk.payments.TipMode.NO_TIP;
         this.tipAmount = 0;
@@ -36,7 +37,16 @@ export default class Store {
         this.automaticSignatureConfirmation = true;
         this.automaticPaymentConfirmation = true;
         this.getNextPaymentId = this.getNextPaymentId.bind(this);
+        this.customActivity = null;
 
+    }
+
+    setStoreName(name){
+        this.storeName = name;
+    }
+
+    getStoreName(){
+        return this.storeName;
     }
 
     setCurrentOrder(current) {
@@ -77,6 +87,17 @@ export default class Store {
         return item;
     }
 
+    getPaymentByCloverId(paymentId){
+        let payments = this.getTransactions();
+        let payment = null;
+        payments.filter(function (obj) {
+            if (obj[0].cloverPaymentId === paymentId) {
+               payment = obj;
+            }
+        });
+        return payment[0];
+    }
+
     getOrders() {
         return this.orders;
     }
@@ -84,7 +105,10 @@ export default class Store {
     getTransactions() {
         this.transactions = [];
         this.orders.forEach(function (order) {
-            this.transactions.push(order.getOrderPayments());
+            order.getOrderPayments().forEach(function (orderPayment) {
+                   this.transactions.push(order.getOrderPayments());
+
+            }, this);
         }, this);
         return this.transactions;
     }
@@ -159,10 +183,8 @@ export default class Store {
     }
 
     addPaymentToOrder(payment, orderId) {
-        console.log('inside add payment to order', payment, orderId);
         let order = this.getOrderById(orderId);
         order.addOrderPayment(payment);
-        console.log('addPaymentToOrder: ', order);
     }
 
     addDiscount(discount) {
@@ -267,6 +289,14 @@ export default class Store {
 
     setAutomaticPaymentConfirmation(automaticPaymentConfirmation) {
         this.automaticPaymentConfirmation = automaticPaymentConfirmation;
+    }
+
+    setCustomActivity(activity){
+        this.customActivity = activity;
+    }
+
+    getCustomActivity(){
+        return this.customActivity;
     }
 
 }

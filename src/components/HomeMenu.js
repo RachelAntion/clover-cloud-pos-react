@@ -49,7 +49,7 @@ export default class HomeMenu extends React.Component {
                 <div className="home_row">
                     <Link to="/vault-card">
                         <div className="home_button">
-                            <div className="home_title">Vault Card</div>
+                            <div className="home_title">Customers (Vault Card)</div>
                             <img className="home_icon" src={'images/card.png'}/>
                         </div>
                     </Link>

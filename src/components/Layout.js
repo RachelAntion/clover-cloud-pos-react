@@ -13,7 +13,7 @@ export default class Layout extends React.Component {
         super(props);
         this.state = {
             connected : false,
-            uriText : "wss://192.168.0.9:12345/remote_pay",
+            uriText : "wss://192.168.0.35:12345/remote_pay",
             pairingCode: '',
             statusText: '',
             statusToggle: false,
@@ -29,10 +29,12 @@ export default class Layout extends React.Component {
             fadeBackground: false,
             responseFail: false,
             signatureRequest: null,
-            showSignature: false
+            showSignature: false,
+            refundSuccess: false
         };
         this.toggleConnectionState = this.toggleConnectionState.bind(this);
         this.setPairingCode = this.setPairingCode.bind(this);
+        this.closePairingCode = this.closePairingCode.bind(this);
         this.setStatus = this.setStatus.bind(this);
         this.connect = this.connect.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -65,14 +67,22 @@ export default class Layout extends React.Component {
 
     toggleConnectionState(connected){
         this.setState({ connected: connected});
+        if(connected){
+            this.setState({fadeBackground: false});
+        }
         this.cloverConnection.cloverConnector.showWelcomeScreen();
     }
 
     setPairingCode(pairingCode){
-        this.setState({ pairingCode: pairingCode});
+        this.setState({ pairingCode: pairingCode, fadeBackground: true});
+    }
+
+    closePairingCode(){
+        this.setState({ pairingCode: '', fadeBackground: false});
     }
 
     confirmSignature(request){
+        console.log("calling closeStatus");
         this.closeStatus();
         let signature = request.signature;
         this.setState({showSignature: true, fadeBackground: true, signatureRequest: request });
@@ -101,30 +111,21 @@ export default class Layout extends React.Component {
     setStatus(message, reason) {
         //console.log(message, reason);
         if((typeof message === "object") && (message !== null)){
-            //console.log("isArray", message);
-            this.setState({statusArray: message,  statusToggle: false, fadeBackground: true, responseFail: false});
+            console.log("isArray", message);
+            this.setState({statusArray: message,  statusToggle: false, fadeBackground: true, responseFail: false, refundSuccess: false});
         }
-        else if (message == 'got sale response' || message == 'got auth response' || message === "Sale successfully processed using Pre Authorization") {
-            //console.log('got a sale response');
-            this.setState({statusToggle: false, saleFinished: true, fadeBackground: false, responseFail: false});
+        else if (message == 'Sale Processed Successfully' || message == 'Auth Processed Successfully' || message === "Sale successfully processed using Pre Authorization") {
+            this.saleFinished(message);
         }
         else if(message === 'Response was not a sale'){
-            this.setState({responseFail : true, statusText: reason, fadeBackground: true, statusToggle: true, inputOptions: null});
+            console.log("Response not sale");
+            this.setState({responseFail : true, statusText: reason, fadeBackground: true, statusToggle: true, inputOptions: null, refundSuccess: false});
             setTimeout(function() {
                 this.setState({statusToggle: false, fadeBackground: false});
             }.bind(this), 1200);
         }
-        else if(message === 'Card Successfully Vaulted' || message === 'PreAuth Successful'|| message === "Refund Successful"){
-            if(message === 'Card Successfully Vaulted'){
-                this.setState({vaultedCard: true});
-            }
-            if(message === 'PreAuth Successful'){
-                this.setState({preAuth: true})
-            }
-            this.setState({statusToggle: true, statusText: message, challenge: false, saleFinished: false, fadeBackground: true, responseFail: false});
-            setTimeout(function() {
-                this.setState({statusToggle: false, fadeBackground: false});
-            }.bind(this), 1200);
+        else if(reason === "Toggle"){
+            this.statusToggle(message);
         }
         else{
             this.setState({
@@ -137,9 +138,34 @@ export default class Layout extends React.Component {
                 inputOptions: null,
                 fadeBackground: true,
                 responseFail: false,
+                refundSuccess: false
             });
         }
     }
+
+    saleFinished(message){
+        this.setState({statusText: message, statusToggle: true, saleFinished: true, fadeBackground: true, responseFail: false, refundSuccess: false});
+        setTimeout(function() {
+            this.setState({statusToggle: false, fadeBackground: false});
+        }.bind(this), 1400);
+    }
+
+    statusToggle(message){
+        if(message === 'Card Successfully Vaulted'){
+            this.setState({vaultedCard: true, refundSuccess: false});
+        }
+        if(message === 'PreAuth Successful'){
+            this.setState({preAuth: true, refundSuccess: false});
+        }
+        if(message === 'Refund Processed Successfully'){
+            this.setState({refundSuccess: true});
+        }
+        this.setState({statusToggle: true, statusText: message, challenge: false, saleFinished: false, fadeBackground: true, responseFail: false});
+        setTimeout(function() {
+            this.setState({statusToggle: false, fadeBackground: false});
+        }.bind(this), 1500);
+    }
+
 
     closeCardData(){
         this.setState({statusArray : null, fadeBackground: false});
@@ -151,7 +177,6 @@ export default class Layout extends React.Component {
 
 
     closeStatus(){
-        //console.log('closeStatus');
         if(!this.state.challenge){
             this.setState({statusToggle: false});
             if(this.state.statusArray === null){
@@ -184,6 +209,7 @@ export default class Layout extends React.Component {
 
     inputClick(io){
         this.cloverConnection.cloverConnector.invokeInputOption(io);
+        this.closeStatus();
     }
 
 
@@ -209,12 +235,18 @@ export default class Layout extends React.Component {
         let connectionState = "Disconnected";
         if( this.state.connected) {
             connectionState = "Connected";
+            if(this.store.getStoreName()!== null){
+                connectionState = (connectionState + " to "+this.store.getStoreName());
+            }
         }
         let showBody = this.state.connected;
         // let showBody = true;
         let pairing = <div/>;
         if( this.state.pairingCode.length > 0){
-            pairing = <div className="pairing_code">Enter pairing code: {this.state.pairingCode} into your device</div>
+            pairing = (<div className="popup popup_container">
+                <div className="close_popup" onClick={this.closePairingCode}>X</div>
+                <div className="pairing_code">Enter pairing code: <span>{this.state.pairingCode}</span> into your device</div>
+            </div>);
         }
         let showStatus = this.state.statusToggle;
         let status = this.state.statusText;
@@ -305,6 +337,7 @@ export default class Layout extends React.Component {
                             fadeBackground: this.fadeBackground,
                             unfadeBackground: this.unfadeBackground,
                             responseFail: this.state.responseFail,
+                            refundSuccess: this.state.refundSuccess,
                         })}
                     </div>
                 ):(

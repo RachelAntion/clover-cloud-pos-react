@@ -9,7 +9,7 @@ export default class OrderPaymentRow extends React.Component {
         super(props);
         this.orderPayment = this.props.orderPayment;
         this.order = this.props.order;
-        //console.log("orderpayment" , this.orderPayment);
+        console.log("orderpayment" , this.props);
         this.formatter = new CurrencyFormatter();
         this.imageHelper = new ImageHelper();
     }
@@ -21,9 +21,9 @@ export default class OrderPaymentRow extends React.Component {
             check = true;
         }
         const date = this.orderPayment.date;
-        const id = this.orderPayment.id;
+        //const id = this.orderPayment.id;
         const total = this.formatter.formatCurrency(this.orderPayment.amount);
-        let   tip = this.formatter.formatCurrency(this.orderPayment.tipAmount);
+        //let tip = this.formatter.formatCurrency(this.orderPayment.tipAmount);
         const onClick = this.props.onClick;
         let image = this.imageHelper.getCardTypeImage(this.orderPayment.cardType);
         const tender = this.orderPayment.tender;

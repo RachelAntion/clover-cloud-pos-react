@@ -4,6 +4,12 @@ html{
     width: 100%;
     min-height:0;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
 body{
     display: flex;
     flex-direction: column;
@@ -48,8 +54,8 @@ h3{
     font-weight: 600;
 }
 
-.no_margin{
-    margin: 0px;
+.left_margin{
+    margin: 0px 0px 0px 20px;
 }
 
 .page_header{
@@ -220,6 +226,12 @@ h3{
     color: black;
 }
 
+.normal_button:disabled{
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    color: grey;
+}
+
 
 .orders_list{
     flex-grow: 2;
@@ -341,6 +353,8 @@ h3{
     margin-left: 40px;
     margin-right: 40px;
     margin-top: 20px;
+    flex-wrap: wrap;
+    overflow-y: scroll;
 }
 
 .settings_section > h3{
@@ -415,7 +429,11 @@ h3{
 }
 
 .pairing_code{
-    margin-top: 25px;
+    padding: 10px 10px 20px 10px;
+    text-align: center;
+}
+
+.pairing_code > span {
     font-weight: bold;
 }
 
@@ -461,7 +479,7 @@ h3{
 .settings{
     display: flex;
     flex-direction: column;
-    padding: 5px 0px 10px 29px;
+    padding: 10px 0px 10px 0px;
     width: 65%;
     background: white;
     position: absolute;
@@ -472,6 +490,7 @@ h3{
     right: 0;
     box-shadow: 0 0 4px #000000;
     z-index: 2;
+    max-height: 550px;
 }
 
 .settings > h3 {
@@ -479,18 +498,21 @@ h3{
 }
 
 .settings_side{
-    padding-bottom:20px;
-}
-.settings_left{
     flex-grow: 1;
-    padding-right: 30px;
-}
-.settings_right{
-    flex-grow: 1;
-    padding-left: 30px;
+    padding:05px 15px 20px 15px;
     display: flex;
     flex-direction: column;
 }
+/*.settings_left{*/
+    /*flex-grow: 1;*/
+    /*padding-right: 30px;*/
+/*}*/
+/*.settings_right{*/
+    /*flex-grow: 1;*/
+    /*padding-left: 30px;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+/*}*/
 
 .settings_row{
     display: flex;
@@ -500,7 +522,6 @@ h3{
     padding-bottom: 8px;
     margin-left: 35px;
     align-items: center;
-    flex-wrap: wrap;
     font-size: 15px;
 }
 
@@ -760,8 +781,9 @@ h3{
 
 .dollar_span{
     position: absolute;
-    left: 12px;
-    top: 70px;
+    left: 29px;
+    top: 84px;
+    width: 0px;
 }
 
 .payment_details_list{
@@ -1076,6 +1098,13 @@ input:checked + .slider:before {
 
 .input_input{
     height:24px;
+    padding-left: 5px;
+    font-size: 12px;
+    width: 139px;
+}
+
+.input_dollar_sign{
+    height:24px;
     padding-left: 18px;
     font-size: 12px;
 }
@@ -1132,4 +1161,12 @@ input:checked + .slider:before {
 
 .preAuth_amount:hover .amount_tooltip {
     visibility: visible;
+}
+
+.preauth_prompt{
+    margin-top: 10px;
+}
+
+.setting_title{
+    width: 290px;
 }
